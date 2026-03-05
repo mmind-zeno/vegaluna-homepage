@@ -1,0 +1,258 @@
+/* ============================================
+   vegAluna Design System – globals.css
+   Kopiere diesen Block in /styles/globals.css
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design Tokens ─── */
+:root {
+  /* Colors */
+  --vl-forest:      #1B3A2D;
+  --vl-forest-dark: #122A20;
+  --vl-forest-light:#2A5040;
+  --vl-sage:        #5A7A65;
+  --vl-sage-light:  #8FAF96;
+  --vl-cream:       #FAF6EE;
+  --vl-warm-white:  #FFFDF8;
+  --vl-terracotta:  #C4622D;
+  --vl-terra-hover: #A3521F;
+  --vl-gold:        #C9973A;
+  --vl-charcoal:    #2A2A2A;
+  --vl-muted:       #6B7280;
+  --vl-light-sage:  #E8EFE8;
+  --vl-border:      #D8E5D8;
+
+  /* Typography */
+  --font-display:   'Cormorant Garamond', Georgia, serif;
+  --font-body:      'DM Sans', system-ui, sans-serif;
+
+  /* Spacing */
+  --section-py:     6rem;     /* py-24 */
+  --section-py-lg:  8rem;     /* py-32 */
+  --max-content:    1280px;
+  --max-text:       720px;
+
+  /* Shadows */
+  --shadow-card:    0 4px 24px rgba(27, 58, 45, 0.08);
+  --shadow-hover:   0 12px 40px rgba(27, 58, 45, 0.16);
+  --shadow-nav:     0 2px 20px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-base:    150ms ease;
+  --transition-smooth:  300ms ease;
+  --transition-slow:    600ms ease;
+
+  /* Border Radius */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --radius-pill: 999px;
+}
+
+/* ─── Base Styles ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--vl-cream);
+  color: var(--vl-charcoal);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Typography ─── */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  color: var(--vl-forest);
+}
+
+h1 { font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 700; }
+h2 { font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 600; }
+h3 { font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 600; }
+h4 { font-family: var(--font-body); font-size: 0.875rem; font-weight: 500;
+     text-transform: uppercase; letter-spacing: 0.15em; color: var(--vl-sage); }
+
+p { line-height: 1.75; max-width: 70ch; }
+
+blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--vl-forest);
+  border-left: 3px solid var(--vl-gold);
+  padding-left: 1.5rem;
+  line-height: 1.4;
+}
+
+/* ─── Utility Classes ─── */
+@layer components {
+
+  /* Container */
+  .vl-container {
+    @apply max-w-[1280px] mx-auto px-6 md:px-12 lg:px-16;
+  }
+
+  /* Section */
+  .vl-section {
+    @apply py-24 md:py-32;
+  }
+
+  /* Section Label */
+  .vl-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--vl-terracotta);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--vl-terracotta);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color var(--transition-base), 
+                transform var(--transition-base),
+                box-shadow var(--transition-base);
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover {
+    background-color: var(--vl-terra-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(196, 98, 45, 0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    color: var(--vl-forest);
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid var(--vl-forest);
+    transition: all var(--transition-base);
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background-color: var(--vl-forest);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .btn-outline-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid rgba(255,255,255,0.6);
+    transition: all var(--transition-base);
+    cursor: pointer;
+  }
+  .btn-outline-light:hover {
+    background-color: rgba(255,255,255,0.15);
+    border-color: white;
+  }
+
+  /* Cards */
+  .vl-card {
+    background-color: var(--vl-warm-white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-smooth),
+                box-shadow var(--transition-smooth);
+  }
+  .vl-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Tag / Badge */
+  .vl-tag {
+    display: inline-block;
+    padding: 0.25rem 0.875rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background-color: var(--vl-light-sage);
+    color: var(--vl-forest);
+  }
+
+  /* Divider */
+  .vl-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--vl-gold), transparent);
+    margin: 1.5rem 0;
+  }
+
+  /* Grain Overlay (dekorativ) */
+  .vl-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+  }
+}
+
+/* ─── Tailwind Config Ergänzungen (tailwind.config.ts) ─── */
+/*
+extend: {
+  colors: {
+    'vl-forest':     '#1B3A2D',
+    'vl-sage':       '#5A7A65',
+    'vl-cream':      '#FAF6EE',
+    'vl-terracotta': '#C4622D',
+    'vl-gold':       '#C9973A',
+  },
+  fontFamily: {
+    display: ['Cormorant Garamond', 'Georgia', 'serif'],
+    body: ['DM Sans', 'system-ui', 'sans-serif'],
+  },
+}
+*/

@@ -1,0 +1,6 @@
+services:
+  webapp:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
