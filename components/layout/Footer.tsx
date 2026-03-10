@@ -72,7 +72,7 @@ export default function Footer() {
 
         <div className="mt-16 pt-8 border-t border-vl-forest-light flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-vl-cream/70">
-            © 2025 vegAluna GmbH · v0.5.0
+            © 2025 vegAluna GmbH · v0.6.0
           </p>
           <div className="flex gap-6">
             <Link href="/impressum" className="text-sm text-vl-cream/70 hover:text-white transition-colors">
