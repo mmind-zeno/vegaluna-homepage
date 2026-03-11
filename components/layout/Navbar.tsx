@@ -46,12 +46,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/events"
-              className="px-6 py-3 rounded-full bg-vl-gold text-vl-forest text-base font-semibold hover:bg-vl-gold/90 transition-colors"
-            >
-              Jetzt anmelden
-            </Link>
           </div>
           <button
             aria-label="Menü öffnen"
@@ -86,13 +80,6 @@ export default function Navbar() {
               {String(i + 1).padStart(2, '0')}. {link.label}
             </Link>
           ))}
-          <Link
-            href="/events"
-            className="px-8 py-4 rounded-full bg-vl-gold text-vl-forest text-lg font-semibold"
-            onClick={() => setMobileOpen(false)}
-          >
-            Jetzt anmelden
-          </Link>
         </div>
       )}
     </>

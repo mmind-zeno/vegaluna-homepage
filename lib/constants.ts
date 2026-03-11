@@ -20,11 +20,11 @@ export const OPENING_HOURS = [
 
 export const NAV_LINKS = [
   { href: '/', label: 'Home' },
-  { href: '/events', label: 'Events' },
+  { href: '/#events', label: 'Kochkurse' },
+  { href: '/#catering', label: 'Catering' },
+  { href: '/#ernaehrung', label: 'Ernährung' },
   { href: '/about', label: 'Über uns' },
-  { href: '/takeaway', label: 'TakeAway' },
-  { href: '/catering', label: 'Catering' },
-  { href: '/ernaehrung', label: 'Ernährung' },
+  { href: '/#partner', label: 'Partner' },
 ]
 
 export const DANKSAGUNG = {
@@ -34,6 +34,61 @@ export const DANKSAGUNG = {
 }
 
 export const REORIENTIERUNG = 'vegAluna wird sich im nächsten halben Jahr neu orientieren. Kochkurse, Catering und Ernährungsberatung bleiben auf Anfrage buchbar.'
+
+export const STATS = [
+  { value: 4, suffix: '+', label: 'Jahre vegAluna' },
+  { value: 100, suffix: '+', label: 'Events & Caterings' },
+  { value: 50, suffix: '+', label: 'Kochkurse' },
+  { value: 1000, suffix: '+', label: 'Gäste & Teilnehmer' },
+]
+
+export const TESTIMONIALS = [
+  {
+    quote: 'Wir haben zum ersten Mal verstanden, wie gut pflanzliches Essen sein kann.',
+    name: 'Kochkurs-Gruppe',
+    context: 'Einführungskurs 2024',
+  },
+  {
+    quote: 'Das Catering war der Höhepunkt unserer Firmenfeier – alle waren begeistert.',
+    name: 'Unternehmerin aus Vaduz',
+    context: 'Event-Catering 2023',
+  },
+  {
+    quote: 'Nach der Ernährungsberatung hatte ich endlich Klarheit über B12 und Eisen.',
+    name: 'Beratungs-Klientin',
+    context: 'Ernährungsberatung 2025',
+  },
+]
+
+export const SERVICES_CARDS = [
+  {
+    id: 'kochkurse',
+    title: 'Kochkurse & Workshops',
+    badge: 'Auf Anfrage buchbar',
+    description: 'Hands-on Kurse, Open Fire Cooking und festliche Dinner – von der Einführung bis zu Vertiefungsthemen.',
+    image: '/images/kochkurs-workshop-handson.jpg',
+    href: '/#events',
+    cta: 'Kurs anfragen',
+  },
+  {
+    id: 'catering',
+    title: 'Event-Catering',
+    badge: 'Auf Anfrage buchbar',
+    description: 'Buffets, Fingerfood und Konferenzen – 100% pflanzlich, mit Equipment und Dekoration.',
+    image: '/images/catering-event-buffet-konferenz.jpg',
+    href: '/#catering',
+    cta: 'Catering anfragen',
+  },
+  {
+    id: 'ernaehrung',
+    title: 'Ernährungsberatung',
+    badge: 'Unser Fokus heute',
+    description: 'Individuelle 1:1-Beratung, Nährstoff-Deep-Dive und Begleitung auf dem Weg zur pflanzlichen Ernährung.',
+    image: '/images/vegaluna-outdoor-garden-event.jpg',
+    href: '/#ernaehrung',
+    cta: 'Beratung anfragen',
+  },
+]
 
 export const WORKSHOPS = [
   {

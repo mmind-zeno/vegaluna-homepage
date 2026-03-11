@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './styles/globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import AnnouncementBanner from '@/components/layout/AnnouncementBanner'
 
 export const metadata: Metadata = {
   title: 'vegAluna – Kochkurse, Catering & Ernährungsberatung | Liechtenstein',
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/images/vegAluna_logo_ws-rund_570px.png" type="image/png" />
       </head>
       <body>
+        <AnnouncementBanner />
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
