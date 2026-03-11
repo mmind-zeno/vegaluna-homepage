@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import RotatingPageHero from '@/components/sections/RotatingPageHero'
+import type { RotatingPageHeroSlide } from '@/components/sections/RotatingPageHero'
 
 const NAV_ITEMS: { label: string; id: string }[] = [
   { label: 'Übersicht', id: 'uebersicht' },
@@ -19,40 +21,21 @@ const NAV_ITEMS: { label: string; id: string }[] = [
   { label: 'Checkliste', id: 'checkliste' },
 ]
 
+const ERNAEHRUNG_HERO_SLIDES: RotatingPageHeroSlide[] = [
+  { image: "/images/kochkurs-workshop-handson.jpg", imageAlt: "Ernährung", title: "Nährstoff-Deep-Dive", subtitle: "Pflanzliche Ernährung ist bunt, lecker und gesund.", extra: "B12, Eisen, Calcium, Omega-3, Protein – fundiert, verständlich." },
+  { image: "/images/takeaway-curry-plate.jpg", imageAlt: "Gesunde Mahlzeit", title: "Nährstoff-Deep-Dive", subtitle: "Dein Kompendium zu den kritischen Nährstoffen.", extra: "Wissenschaftlich geprüft · 100% vegan." },
+  { image: "/images/catering-broetli-aufstriche.jpg", imageAlt: "Gesunde Ernährung", title: "Nährstoff-Deep-Dive", subtitle: "Vollkorn, Aufstriche, Vielfalt.", extra: "Ohne Mythen – fundiert und verständlich." },
+  { image: "/images/event-catering-hall-buffet.jpg", imageAlt: "Events", title: "Nährstoff-Deep-Dive", subtitle: "Pflanzliche Ernährung – voller Energie.", extra: "B12, Eisen, Calcium, Omega-3, Protein und mehr." },
+  { image: "/images/workshop-kochkurs-gruppe.jpg", imageAlt: "Workshop", title: "Nährstoff-Deep-Dive", subtitle: "Gesund, lecker, pflanzlich.", extra: "Persönliche Beratung auf Anfrage." },
+  { image: "/images/vegaluna-event-display-banner.jpg", imageAlt: "vegAluna", title: "Nährstoff-Deep-Dive", subtitle: "Pflanzliche Ernährung ist für alle Lebensphasen geeignet.", extra: "Gut geplant – unser Guide hilft dir." },
+]
+
 export default function ErnährungPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   return (
     <>
-      {/* Hero mit Bild-Overlay */}
-      <section className="relative min-h-[40vh] flex items-end">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/4_vegaluna_vegan_event_750kb-scaled.jpg"
-            alt="Pflanzliche Ernährung"
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-vl-forest/70" />
-        </div>
-        <div className="relative z-10 vl-container w-full py-16">
-          <h1 className="font-display text-4xl md:text-5xl font-semibold text-white">
-            Nährstoff-Deep-Dive
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/90 text-lg">
-            Pflanzliche Ernährung ist bunt, lecker und gesund. Dein umfassendes Kompendium zu den kritischen Nährstoffen – fundiert, verständlich, ohne Mythen.
-          </p>
-          <div className="flex flex-wrap gap-3 mt-6">
-            {['WISSENSCHAFTLICH GEPRÜFT', 'KOMPLETT-GUIDE', '100% VEGAN'].map((b) => (
-              <span key={b} className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-medium">
-                {b}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <RotatingPageHero slides={ERNAEHRUNG_HERO_SLIDES} />
 
       {/* Sticky Nav für Ernährung */}
       <nav className="sticky top-20 z-40 vl-container py-3 bg-vl-cream/95 backdrop-blur-sm border-b border-vl-light-sage shadow-sm hidden lg:block">
@@ -129,7 +112,7 @@ export default function ErnährungPage() {
             </div>
           </div>
           <div className="relative min-h-[280px] rounded-xl overflow-hidden">
-            <Image src="/images/5_vegaluna_vegan_event_750kb-scaled.jpg" alt="Gesunde Ernährung" fill className="object-cover" sizes="50vw" />
+            <Image src="/images/takeaway-curry-plate.jpg" alt="Gesunde Ernährung" fill className="object-cover" sizes="50vw" />
             <div className="absolute inset-0 bg-vl-forest/30" />
           </div>
         </div>
@@ -139,7 +122,7 @@ export default function ErnährungPage() {
       <section id="eisen" className="vl-section vl-container bg-vl-cream scroll-mt-24">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <div className="relative min-h-[280px] rounded-xl overflow-hidden order-2 md:order-1">
-            <Image src="/images/6_vegaluna_vegan_event_750kb-scaled.jpg" alt="Eisenreiche Ernährung" fill className="object-cover" sizes="50vw" />
+            <Image src="/images/catering-broetli-aufstriche.jpg" alt="Eisenreiche Ernährung" fill className="object-cover" sizes="50vw" />
             <div className="absolute inset-0 bg-vl-sage/25" />
           </div>
           <div className="order-1 md:order-2">

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import './styles/globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import RotatingHero from '@/components/sections/RotatingHero'
 
 export const metadata: Metadata = {
   title: 'vegAluna – Kochkurse, Catering & Ernährungsberatung | Liechtenstein',
@@ -18,7 +17,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Navbar />
-        <RotatingHero />
         <main className="min-h-screen">{children}</main>
         <Footer />
       </body>

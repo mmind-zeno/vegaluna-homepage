@@ -4,46 +4,53 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import { DANKSAGUNG, REORIENTIERUNG, STANDORT_SCHLIESSUNG } from '@/lib/constants'
 
 const SLIDES = [
   {
-    image: '/images/1_vegaluna_vegan_event__750kb-scaled.jpg',
+    image: '/images/vegaluna-event-display-banner.jpg',
     label: 'Vaduz · Liechtenstein',
     title: ['Zentrum für gesunde', 'pflanzliche Ernährung.'],
-    sub: 'Kochkurse · Catering · Ernährungsberatung · TakeAway',
+    sub: 'Kochkurse · Catering · Ernährungsberatung · TakeAway – happy food, happy life.',
+    extra: 'Wir verbinden Genuss, Gesundheit und Nachhaltigkeit in der Region.',
     accent: '#C4622D',
   },
   {
-    image: '/images/5_vegaluna_vegan_event_750kb-scaled.jpg',
+    image: '/images/kochkurs-workshop-handson.jpg',
     label: 'Workshops & Kurse',
     title: ['Lernen, kochen,', 'gemeinsam geniessen.'],
-    sub: 'Kleine Gruppen · Festliches Dinner · Praxis & Theorie',
+    sub: 'Kleine Gruppen · Festliches Dinner · Praxis & Theorie.',
+    extra: 'Einführung plant-based, Open Fire Cooking oder Vertiefung Gesundheit – auf Anfrage.',
     accent: '#C9973A',
   },
   {
-    image: '/images/6_vegaluna_vegan_event_750kb-scaled.jpg',
+    image: '/images/catering-event-buffet-konferenz.jpg',
     label: 'Event Catering',
     title: ['Plant-based.', 'Alles aus einer Hand.'],
-    sub: 'Gesund · Nachhaltig · Bio · Bis 100 Personen',
+    sub: 'Gesund · Nachhaltig · Bio · Bis 100 Personen.',
+    extra: 'Von der Planung bis zur Durchführung – wir verwandeln jeden Anlass.',
     accent: '#5A7A65',
   },
   {
-    image: '/images/vegaluna_bio-laden.jpg',
+    image: '/images/takeaway-curry-plate.jpg',
     label: 'Mittagsmenü',
     title: ['Frisch gekocht.', 'Mo · Mi · Fr.'],
-    sub: '11:30 – 13:00 Uhr · Täglich wechselndes Menü',
+    sub: '11:30 – 13:00 Uhr · Täglich wechselndes Menü.',
+    extra: 'TakeAway endet bald – Standort schliesst per ' + STANDORT_SCHLIESSUNG + '.',
     accent: '#1B3A2D',
   },
   {
-    image: '/images/8_vegaluna_vegan_event_bbq_750kb.jpg',
+    image: '/images/vegaluna-outdoor-garden-event.jpg',
     label: 'Ernährung & Wissen',
     title: ['Pflanzlich leben.', 'Voller Energie.'],
-    sub: 'B12 · Eisen · Omega-3 · Protein · Alles was du brauchst',
+    sub: 'B12 · Eisen · Omega-3 · Protein · Alles was du brauchst.',
+    extra: 'Unser Nährstoff-Guide und persönliche Beratung auf Anfrage.',
     accent: '#C9973A',
   },
 ]
 
-const DURATION = 15000
+const DURATION = 7000
+const TRANSITION_MS = 1800
 
 export default function RotatingHero() {
   const [current, setCurrent] = useState(0)
@@ -52,9 +59,11 @@ export default function RotatingHero() {
   const [progress, setProgress] = useState(0)
   const startRef = useRef<number>(0)
   const rafRef = useRef<number>(0)
+  const phaseRef = useRef<'idle' | 'in'>('idle')
+  const currentRef = useRef(0)
 
   const goTo = (idx: number) => {
-    if (idx === current || phase !== 'idle') return
+    if (idx === current || phaseRef.current !== 'idle') return
     setPrev(current)
     setCurrent(idx)
     setPhase('in')
@@ -62,18 +71,20 @@ export default function RotatingHero() {
     startRef.current = performance.now()
   }
 
-  const next = () => goTo((current + 1) % SLIDES.length)
+  useEffect(() => {
+    currentRef.current = current
+  }, [current])
+
+  useEffect(() => {
+    phaseRef.current = phase
+  }, [phase])
 
   useEffect(() => {
     const tick = (now: number) => {
       if (!startRef.current) startRef.current = now
       const elapsed = now - startRef.current
       setProgress(Math.min(elapsed / DURATION, 1))
-      if (elapsed < DURATION) {
-        rafRef.current = requestAnimationFrame(tick)
-      } else {
-        next()
-      }
+      rafRef.current = requestAnimationFrame(tick)
     }
     startRef.current = performance.now()
     rafRef.current = requestAnimationFrame(tick)
@@ -81,11 +92,29 @@ export default function RotatingHero() {
   }, [current])
 
   useEffect(() => {
+    const id = window.setInterval(() => {
+      if (phaseRef.current !== 'idle') return
+      const nextIdx = (currentRef.current + 1) % SLIDES.length
+      setPrev(currentRef.current)
+      setCurrent(nextIdx)
+      setPhase('in')
+      setProgress(0)
+      startRef.current = performance.now()
+      currentRef.current = nextIdx
+    }, DURATION)
+    return () => window.clearInterval(id)
+  }, [])
+
+  useEffect(() => {
     if (phase === 'in') {
-      const t = setTimeout(() => setPhase('idle'), 900)
+      const t = setTimeout(() => setPhase('idle'), TRANSITION_MS)
       return () => clearTimeout(t)
     }
   }, [phase, current])
+
+  useEffect(() => {
+    if (phase === 'idle' && prev !== null) setPrev(null)
+  }, [phase, prev])
 
   const slide = SLIDES[current]
   const prevSlide = prev !== null ? SLIDES[prev] : null
@@ -93,42 +122,29 @@ export default function RotatingHero() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-[#0e1e16]">
       {/* Background images */}
-      <AnimatePresence mode="wait">
-        {prevSlide && phase === 'in' && (
+      <motion.div
+        key={`current-${current}`}
+        className="absolute inset-0 z-[1]"
+        initial={{ opacity: 0, scale: 1.03 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: TRANSITION_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Image src={slide.image} alt="" fill className="object-cover" sizes="100vw" priority />
+      </motion.div>
+
+      <AnimatePresence mode="sync">
+        {prevSlide && (
           <motion.div
             key={`prev-${prev}`}
-            className="absolute inset-0 z-[1]"
-            initial={{ opacity: 1, scale: 1 }}
-            animate={{ opacity: 0, scale: 0.98 }}
+            className="absolute inset-0 z-[2]"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: phase === 'in' ? 0 : 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: TRANSITION_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Image
-              src={prevSlide.image}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
+            <Image src={prevSlide.image} alt="" fill className="object-cover" sizes="100vw" priority />
           </motion.div>
         )}
-        <motion.div
-          key={current}
-          className={`absolute inset-0 z-[2] ${phase === 'in' ? '' : ''}`}
-          initial={phase === 'in' ? { opacity: 0, scale: 1.06 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-        >
-          <Image
-            src={slide.image}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
-        </motion.div>
       </AnimatePresence>
 
       {/* Overlay gradient – klare Lesbarkeit, eine Fokusfläche unten links */}
@@ -147,8 +163,38 @@ export default function RotatingHero() {
         }}
       />
 
-      {/* Content overlay – nur Headline + CTAs, kein zentrales Logo */}
-      <div className="absolute inset-0 z-[5] flex flex-col justify-end pb-16 md:pb-24 px-6 md:px-12 lg:px-16">
+      {/* Content overlay */}
+      <div className="absolute inset-0 z-[5] flex flex-col justify-between pt-20 md:pt-24 pb-16 md:pb-24 px-6 md:px-12 lg:px-16">
+        {/* Schliessung & Dank – auf allen Headern gross sichtbar */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-4xl"
+        >
+          <div className="bg-vl-forest/90 backdrop-blur-sm border border-white/20 rounded-2xl px-6 py-5 md:px-8 md:py-6 shadow-xl">
+            <p className="font-display text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white">
+              VegAluna verabschiedet sich von der Location.
+            </p>
+            <p className="mt-4 font-display text-xl md:text-2xl lg:text-3xl text-vl-gold font-semibold">
+              Vielen vielen Dank an alle – für die wunderbare Zeit mit euch.
+            </p>
+            <p className="mt-4 text-base md:text-lg lg:text-xl text-white/90 max-w-3xl leading-relaxed">
+              {DANKSAGUNG.text}
+            </p>
+            <p className="mt-4 text-white/95 text-sm md:text-base font-medium">
+              {REORIENTIERUNG} Standort schliesst per {STANDORT_SCHLIESSUNG}.
+            </p>
+            <Link
+              href="#transition"
+              className="inline-block mt-6 px-6 py-3 rounded-full bg-vl-gold text-vl-forest font-semibold hover:bg-vl-gold/90 transition-colors"
+            >
+              Mehr erfahren
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* Slide-spezifischer Inhalt – fliegt beim Wechsel ein */}
         <motion.div
           key={current}
           className="max-w-3xl"
@@ -157,19 +203,19 @@ export default function RotatingHero() {
           variants={{
             hidden: {},
             visible: {
-              transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+              transition: { staggerChildren: 0.1, delayChildren: 0.05 },
             },
           }}
         >
           <motion.span
             variants={{
-              hidden: { opacity: 0, x: -20 },
-              visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+              hidden: { opacity: 0, x: -40 },
+              visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
             }}
-            className="flex items-center gap-2 text-white/75 text-xs md:text-sm font-medium tracking-[0.2em] uppercase mb-4"
+            className="flex items-center gap-2 text-white/80 text-sm md:text-base font-medium tracking-[0.2em] uppercase mb-3"
           >
             <span
-              className="w-1.5 h-1.5 rounded-full shrink-0"
+              className="w-2 h-2 rounded-full shrink-0"
               style={{ backgroundColor: slide.accent }}
             />
             {slide.label}
@@ -177,29 +223,40 @@ export default function RotatingHero() {
 
           <motion.div
             variants={{
-              hidden: { opacity: 0, y: 50 },
+              hidden: { opacity: 0, y: 60 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
             }}
-            className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight"
+            className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight"
           >
             <span className="block">{slide.title[0]}</span>
-            <span className="block font-light italic text-white/90">{slide.title[1]}</span>
+            <span className="block font-light italic text-white/95">{slide.title[1]}</span>
           </motion.div>
 
           <motion.p
             variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
+              hidden: { opacity: 0, y: 32 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.55, delay: 0.08 } },
             }}
-            className="mt-4 text-white/70 text-base md:text-lg tracking-wide"
+            className="mt-4 text-white/90 text-xl md:text-2xl lg:text-3xl tracking-wide max-w-2xl"
           >
             {slide.sub}
           </motion.p>
+          {slide.extra && (
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.12 } },
+              }}
+              className="mt-2 text-white/75 text-base md:text-lg max-w-xl"
+            >
+              {slide.extra}
+            </motion.p>
+          )}
 
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.18 } },
             }}
             className="flex flex-wrap gap-3 mt-8"
           >

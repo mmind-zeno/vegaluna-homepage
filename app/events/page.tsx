@@ -1,25 +1,28 @@
 import Image from "next/image"
 import Link from "next/link"
 import { WORKSHOPS, CONTACT } from "@/lib/constants"
+import RotatingPageHero from "@/components/sections/RotatingPageHero"
+import type { RotatingPageHeroSlide } from "@/components/sections/RotatingPageHero"
 
 export const metadata = {
   title: "Vegane Kochkurse & Workshops – vegAluna Vaduz",
   description: "Vegane Kochkurse, Open Fire Cooking und Ernährungs-Workshops in Vaduz, Liechtenstein. Kleine Gruppen, festliches Dinner inklusive.",
 }
 
+const EVENTS_HERO_SLIDES: RotatingPageHeroSlide[] = [
+  { image: "/images/kochkurs-workshop-handson.jpg", imageAlt: "Kochkurs", title: "Kochkurse & Workshops", subtitle: "Lernen, kochen, gemeinsam geniessen.", extra: "Kleine Gruppen · Festliches Dinner · auf Anfrage." },
+  { image: "/images/events-cooking-workshop.jpg", imageAlt: "Workshop", title: "Hands-on Kochen", subtitle: "Einführung plant-based, Open Fire oder Gesundheit.", extra: "Alle Kurse auf Anfrage buchbar." },
+  { image: "/images/event-catering-hall-buffet.jpg", imageAlt: "Event", title: "Gemeinsam geniessen", subtitle: "Festliches Dinner inklusive.", extra: "Kleine Gruppen, festliche Atmosphäre." },
+  { image: "/images/vegaluna-outdoor-garden-event.jpg", imageAlt: "Outdoor", title: "Open Fire Cooking", subtitle: "Kochen in freier Natur.", extra: "Outdoor-Erlebnis auf Anfrage." },
+  { image: "/images/workshop-kochkurs-gruppe.jpg", imageAlt: "Gruppe", title: "Workshops & Kurse", subtitle: "Praxis & Theorie.", extra: "Ernährungs-Wissen und Genuss." },
+  { image: "/images/event-buffet-salads-drinks.jpg", imageAlt: "Buffet", title: "Kochkurse & Workshops", subtitle: "Lernen, kochen, gemeinsam geniessen.", extra: "Schreib uns: " + CONTACT.email },
+  { image: "/images/event-buffet-sweets.jpg", imageAlt: "Desserts", title: "Festliches Dinner", subtitle: "Kleine Gruppen, festliches Dinner inklusive.", extra: "Einführung plant-based, Open Fire, Gesundheit – auf Anfrage." },
+]
+
 export default function EventsPage() {
   return (
     <>
-      <section className="relative min-h-[40vh] flex items-end">
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/5_vegaluna_vegan_event_750kb-scaled.jpg" alt="vegAluna Events" fill className="object-cover" sizes="100vw" priority />
-          <div className="absolute inset-0 bg-vl-forest/65" />
-        </div>
-        <div className="relative z-10 vl-container w-full py-16">
-          <h1 className="font-display text-4xl md:text-5xl font-semibold text-white">Kochkurse & Workshops</h1>
-          <p className="mt-4 text-white/90 text-lg">Lernen, kochen, gemeinsam geniessen – kleine Gruppen, festliches Dinner</p>
-        </div>
-      </section>
+      <RotatingPageHero slides={EVENTS_HERO_SLIDES} />
       <section className="vl-section vl-container bg-vl-cream">
         <div className="p-6 rounded-xl bg-vl-light-sage mb-12">
           <p className="text-vl-forest">Alle Kurse sind auf Anfrage buchbar. Schreib uns einfach: <a href={"mailto:" + CONTACT.email} className="text-vl-terracotta font-medium hover:underline">{CONTACT.email}</a></p>
@@ -29,7 +32,7 @@ export default function EventsPage() {
           {WORKSHOPS.map((w) => (
             <article key={w.id} className="rounded-xl overflow-hidden bg-vl-warm-white shadow-lg">
               <div className="relative h-48 overflow-hidden">
-                <Image src={w.id === "einfuehrung" ? "/images/5_vegaluna_vegan_event_750kb-scaled.jpg" : w.id === "open-fire" ? "/images/8_vegaluna_vegan_event_bbq_750kb.jpg" : "/images/4_vegaluna_vegan_event_750kb-scaled.jpg"} alt={w.title} fill className="object-cover hover:scale-105 transition-transform duration-300" sizes="(max-width: 768px) 100vw, 33vw" />
+                <Image src={w.id === "einfuehrung" ? "/images/events-cooking-workshop.jpg" : w.id === "open-fire" ? "/images/vegaluna-outdoor-garden-event.jpg" : "/images/event-catering-hall-buffet.jpg"} alt={w.title} fill className="object-cover hover:scale-105 transition-transform duration-300" sizes="(max-width: 768px) 100vw, 33vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-vl-forest/40 to-transparent pointer-events-none" />
                 <span className={"absolute top-4 left-4 px-2 py-1 rounded text-xs font-medium z-10 " + (w.badge === "Bestseller" ? "bg-vl-terracotta text-white" : w.badge === "Outdoor" ? "bg-vl-sage text-white" : "bg-vl-gold text-vl-forest")}>{w.badge}</span>
               </div>

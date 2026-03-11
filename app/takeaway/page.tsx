@@ -1,25 +1,24 @@
-import Image from "next/image"
 import { CONTACT, TAKEAWAY_ENDE } from "@/lib/constants"
 import type { Metadata } from "next"
+import RotatingPageHero from "@/components/sections/RotatingPageHero"
+import type { RotatingPageHeroSlide } from "@/components/sections/RotatingPageHero"
 
 export const metadata: Metadata = {
   title: "Mittagsmenü TakeAway – vegAluna Vaduz",
   description: "Frisches pflanzliches Mittagessen in Vaduz: Mo, Mi, Fr 11:30–13:00. Vortags anmelden und Platz sichern.",
 }
 
+const TAKEAWAY_HERO_SLIDES: RotatingPageHeroSlide[] = [
+  { image: "/images/takeaway-curry-plate.jpg", imageAlt: "Mittagsmenü", title: "Mittagsmenü TakeAway", subtitle: "Frisch gekocht · Mo · Mi · Fr · 11:30 – 13:00 Uhr", extra: "Currys, OnePots, Happy Bowls, Polenta, Lasagne & mehr." },
+  { image: "/images/catering-buffet-display.jpg", imageAlt: "Buffet", title: "Mittagsmenü TakeAway", subtitle: "Vortags anmelden – dein Essen garantiert.", extra: "Noch bis " + TAKEAWAY_ENDE + "." },
+  { image: "/images/catering-appetizer-crudites.jpg", imageAlt: "Frisch", title: "Mittagsmenü TakeAway", subtitle: "Frisch gekocht · 11:30 – 13:00 Uhr", extra: "Spontan: wenige Extraportionen." },
+  { image: "/images/event-buffet-sweets.jpg", imageAlt: "Genuss", title: "Mittagsmenü TakeAway", subtitle: "Mo · Mi · Fr · 11:30 – 13:00 Uhr", extra: "reCIRCLE-Geschirr – nachhaltig." },
+]
+
 export default function TakeawayPage() {
   return (
     <>
-      <section className="relative min-h-[35vh] flex items-end">
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/vegaluna_bio-laden.jpg" alt="Mittagsmenü TakeAway" fill className="object-cover" sizes="100vw" priority />
-          <div className="absolute inset-0 bg-vl-forest/60" />
-        </div>
-        <div className="relative z-10 vl-container w-full py-12">
-          <h1 className="font-display text-4xl md:text-5xl font-semibold text-white">Mittagsmenü TakeAway</h1>
-          <p className="mt-4 text-white/90 text-lg">Frisch gekocht · Mo · Mi · Fr · 11:30 – 13:00 Uhr</p>
-        </div>
-      </section>
+      <RotatingPageHero slides={TAKEAWAY_HERO_SLIDES} />
       <div className="bg-vl-gold/90 text-vl-forest text-center py-3 px-4 text-sm">
         Das TakeAway-Mittagsmenü läuft noch bis {TAKEAWAY_ENDE}. Danach können wir diesen Service leider nicht mehr anbieten.
       </div>

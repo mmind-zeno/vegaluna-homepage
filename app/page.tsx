@@ -3,28 +3,48 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { STANDORT_AKTIV, STANDORT_SCHLIESSUNG, TAKEAWAY_ENDE, DANKSAGUNG, REORIENTIERUNG, CONTACT } from '@/lib/constants'
+import { useState } from 'react'
+import { TAKEAWAY_ENDE, CONTACT, DANKSAGUNG, REORIENTIERUNG, STANDORT_SCHLIESSUNG } from '@/lib/constants'
+import RotatingHero from '@/components/sections/RotatingHero'
 
 const QUOTES = [
   { text: 'Die Größe einer Nation und ihr moralischer Fortschritt können daran gemessen werden, wie ihre Tiere behandelt werden.', author: 'Gandhi' },
   { text: 'Der Weg zur Gesundheit führt durch die Küche, nicht durch die Apotheke.', author: 'Sebastian Kneipp' },
 ]
 
-const PARTNERS = ['Ideencamp', 'Gemeinde Vaduz', 'Formatio', 'Universität Liechtenstein', 'SDG Allianz Liechtenstein', 'Feldfreunde', 'Liechtensteiner Gesellschaft Umweltschutz', 'CIPRA', 'Olympic Committee']
+const PARTNERS: { name: string; logo: string }[] = [
+  { name: 'Ideencamp', logo: '/images/logos/logo-ideenkanal.png' },
+  { name: 'Gemeinde Vaduz', logo: '/images/logos/Logo-Vaduz.jpg' },
+  { name: 'Formatio', logo: '/images/logos/logo-Formatio.png' },
+  { name: 'Universität Liechtenstein', logo: '/images/logos/Uni_Liechtenstein.png' },
+  { name: 'SDG Allianz Liechtenstein', logo: '/images/logos/logo-sdg.png' },
+  { name: 'Feldfreunde', logo: '/images/logos/logo-Feldfreunde.jpg' },
+  { name: 'Liechtensteiner Gesellschaft Umweltschutz', logo: '/images/logos/Logo_Liechtensteiner_Gesellschaft_Umweltschutz-1.png' },
+  { name: 'CIPRA', logo: '/images/logos/logo-cipra.jpg' },
+  { name: 'Olympic Committee', logo: '/images/logos/logo-olympic_committe.png' },
+]
+
+function PartnerLogo({ name, logo }: { name: string; logo: string }) {
+  const [src, setSrc] = useState(logo)
+  return (
+    // For partner logos we intentionally use <img> for maximum compatibility (SVG/PNG/JPG),
+    // and to avoid any Next.js image optimization edge cases in standalone builds.
+    <img
+      src={src}
+      alt={name}
+      width={128}
+      height={64}
+      className="object-contain p-1"
+      loading="lazy"
+      onError={() => setSrc('/images/logos/placeholder.svg')}
+    />
+  )
+}
 
 export default function HomePage() {
   return (
     <>
-      {STANDORT_AKTIV && (
-        <div className="bg-vl-gold text-vl-charcoal py-2.5 px-4 text-center text-sm">
-          <span>
-            Vielen Dank für vier wunderbare Jahre. TakeAway endet {TAKEAWAY_ENDE}, Standort schliesst per {STANDORT_SCHLIESSUNG}.
-          </span>
-          <Link href="#transition" className="ml-2 underline font-medium">
-            Mehr erfahren
-          </Link>
-        </div>
-      )}
+      <RotatingHero />
 
       <section className="vl-section vl-container bg-vl-cream">
         <motion.div
@@ -55,14 +75,14 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
-              image: '/images/5_vegaluna_vegan_event_750kb-scaled.jpg',
+              image: '/images/kochkurs-workshop-handson.jpg',
               tag: 'Erlebnisse',
               title: 'Kochkurse & Workshops',
               text: 'Mehr als nur ein Kurs – verbindet Wissen, Praxis und viel Genuss.',
               href: '/events',
             },
             {
-              image: '/images/vegaluna_bio-laden.jpg',
+              image: '/images/takeaway-curry-plate.jpg',
               tag: 'Mo · Mi · Fr',
               title: 'Mittagsmenü TakeAway',
               text: `Frisches, pflanzliches Mittagessen. 11:30–13:00 Uhr. (noch bis ${TAKEAWAY_ENDE})`,
@@ -129,7 +149,7 @@ export default function HomePage() {
               className="relative p-8 md:p-10 rounded-2xl overflow-hidden bg-vl-forest text-white"
             >
               <div className="absolute inset-0">
-                <Image src="/images/1_vegaluna_vegan_event__750kb-scaled.jpg" alt="" fill className="object-cover opacity-25" sizes="50vw" />
+                <Image src="/images/vegaluna-event-display-banner.jpg" alt="" fill className="object-cover opacity-25" sizes="50vw" />
                 <div className="absolute inset-0 bg-vl-forest/85" />
               </div>
               <blockquote className="relative z-10 font-display text-xl md:text-2xl font-light italic text-white/95 leading-relaxed">
@@ -141,19 +161,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Partner */}
+      {/* Partner – Logos */}
       <section className="vl-section vl-container bg-vl-warm-white">
         <h2 className="font-display text-2xl md:text-3xl font-semibold text-vl-forest text-center mb-12">Unsere Kunden und Partner</h2>
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-6 md:gap-10"
+          className="flex flex-wrap justify-center items-center gap-8 md:gap-12"
         >
-          {PARTNERS.map((name) => (
-            <span key={name} className="px-4 py-2 rounded-full bg-vl-light-sage text-vl-forest text-sm font-medium">
-              {name}
-            </span>
+          {PARTNERS.map((partner) => (
+            <div key={partner.name} className="flex items-center">
+              <div className="relative w-28 h-14 md:w-32 md:h-16 flex items-center justify-center bg-vl-light-sage/60 rounded-lg overflow-hidden">
+                <PartnerLogo name={partner.name} logo={partner.logo} />
+              </div>
+            </div>
           ))}
         </motion.div>
       </section>
@@ -188,7 +210,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="transition" className="vl-section vl-container bg-vl-forest text-white">
+      <section id="transition" className="vl-section vl-container bg-vl-forest text-white scroll-mt-24">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <span className="vl-label text-vl-gold">Eine neue Etappe</span>

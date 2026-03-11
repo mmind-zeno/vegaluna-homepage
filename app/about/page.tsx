@@ -2,6 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { CONTACT } from "@/lib/constants"
+import RotatingPageHero from "@/components/sections/RotatingPageHero"
+import type { RotatingPageHeroSlide } from "@/components/sections/RotatingPageHero"
 
 export const metadata: Metadata = {
   title: "Über uns – Fränzi & Zeno | vegAluna Vaduz",
@@ -10,20 +12,18 @@ export const metadata: Metadata = {
 
 const aboutText = `Magst du dich noch an die besonderen Tage in deiner Kindheit erinnern, als es deine Lieblingsspeise gab? Allein die Erinnerung daran lässt wieder Glücksgefühle frei werden, oder? Ja, ein feines, bewusstes Essen erfüllt uns mit Glück. Und was gibt es schöneres als Menschen mit Glück zu beschenken? Genau das steckt hinter VEGALUNA. Wir möchten dich beglücken indem wir euch zeigen wie gesunde und köstliche Mahlzeiten, ganz ohne tierische Produkte, zubereitet werden. Dieses Glück wird dann wiederum von euch weitergetragen. In diesem Sinn verbreitet sich das Glück nicht nur unter den Menschen, sondern alle Lebewesen können an unserem Glück teilhaben. Wir kochen mit viel Freude und Leidenschaft und möchten unsere Erfahrung und unser Wissen gerne mit euch teilen. Wir möchten inspirieren den Konsum von tierischen Produkten zu reduzieren. Unsere Produkte sollen zeigen, dass gesunde und sehr leckere Speisen auch aus rein pflanzlicher Basis entstehen können. Wir möchten mit VEGALUNA ein Zentrum für gesunde und pflanzliche Ernährung schaffen.`
 
+const ABOUT_HERO_SLIDES: RotatingPageHeroSlide[] = [
+  { image: "/images/about-kueche-preparation.jpg", imageAlt: "Küche", title: "Über uns", subtitle: "Fränzi & Zeno – Leidenschaft für pflanzliche Ernährung", extra: "Wir schaffen ein Zentrum für gesunde, pflanzliche Ernährung." },
+  { image: "/images/workshop-kochkurs-gruppe.jpg", imageAlt: "Workshop", title: "Über uns", subtitle: "Gemeinsam kochen und lernen.", extra: "Wir teilen unser Wissen mit euch." },
+  { image: "/images/catering-canapes-desserts.jpg", imageAlt: "Genuss", title: "Über uns", subtitle: "Leidenschaft für pflanzliche Küche.", extra: "Happy food, happy life." },
+  { image: "/images/event-buffet-salads-drinks.jpg", imageAlt: "Events", title: "Über uns", subtitle: "Fränzi & Zeno & Co.", extra: "Vielen Dank für die wunderbare Zeit." },
+  { image: "/images/vegaluna-outdoor-garden-event.jpg", imageAlt: "Community", title: "Über uns", subtitle: "Leidenschaft für pflanzliche Ernährung.", extra: "Wir möchten inspirieren." },
+]
+
 export default function AboutPage() {
   return (
     <>
-      {/* Hero mit Bild-Overlay */}
-      <section className="relative min-h-[45vh] flex items-end">
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/5_vegaluna_vegan_event_750kb-scaled.jpg" alt="vegAluna" fill className="object-cover" sizes="100vw" priority />
-          <div className="absolute inset-0 bg-vl-forest/65" />
-        </div>
-        <div className="relative z-10 vl-container w-full py-16">
-          <h1 className="font-display text-4xl md:text-5xl font-semibold text-white">Über uns</h1>
-          <p className="mt-4 text-white/90 text-lg">Fränzi & Zeno – Leidenschaft für pflanzliche Ernährung</p>
-        </div>
-      </section>
+      <RotatingPageHero slides={ABOUT_HERO_SLIDES} />
 
       <section className="vl-section vl-container bg-vl-cream">
         <div className="grid md:grid-cols-5 gap-12">
@@ -50,7 +50,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-3 gap-8 mt-20">
           <div className="relative p-8 rounded-2xl overflow-hidden bg-vl-forest text-white">
             <div className="absolute inset-0 opacity-20">
-              <Image src="/images/vegaluna_bio-laden.jpg" alt="" fill className="object-cover" sizes="33vw" />
+              <Image src="/images/catering-canapes-desserts.jpg" alt="" fill className="object-cover" sizes="33vw" />
             </div>
             <div className="relative z-10">
               <h3 className="font-display text-xl font-semibold text-vl-gold mb-2">Newsletter</h3>
@@ -70,7 +70,7 @@ export default function AboutPage() {
           </div>
           <div className="relative p-8 rounded-2xl overflow-hidden bg-vl-terracotta text-white">
             <div className="absolute inset-0 opacity-20">
-              <Image src="/images/8_vegaluna_vegan_event_bbq_750kb.jpg" alt="" fill className="object-cover" sizes="33vw" />
+              <Image src="/images/vegaluna-outdoor-garden-event.jpg" alt="" fill className="object-cover" sizes="33vw" />
             </div>
             <div className="relative z-10">
               <h3 className="font-display text-xl font-semibold text-vl-gold mb-2">Gewinnspiel</h3>
